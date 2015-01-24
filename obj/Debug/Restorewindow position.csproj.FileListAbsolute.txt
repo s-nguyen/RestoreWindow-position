@@ -1,0 +1,9 @@
+c:\users\stephen\documents\visual studio 2013\Projects\Restorewindow position\Restorewindow position\bin\Debug\Restorewindow position.exe.config
+c:\users\stephen\documents\visual studio 2013\Projects\Restorewindow position\Restorewindow position\bin\Debug\Restorewindow position.exe
+c:\users\stephen\documents\visual studio 2013\Projects\Restorewindow position\Restorewindow position\bin\Debug\Restorewindow position.pdb
+c:\users\stephen\documents\visual studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restorewindow position.csprojResolveAssemblyReference.cache
+c:\users\stephen\documents\visual studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restorewindow_position.Form1.resources
+c:\users\stephen\documents\visual studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restorewindow_position.Properties.Resources.resources
+c:\users\stephen\documents\visual studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restorewindow position.csproj.GenerateResource.Cache
+c:\users\stephen\documents\visual studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restorewindow position.exe
+c:\users\stephen\documents\visual studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restorewindow position.pdb
