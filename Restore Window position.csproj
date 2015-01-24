@@ -7,8 +7,8 @@
     <ProjectGuid>{018D8A84-D433-4532-9CA3-4B81F1073EA3}</ProjectGuid>
     <OutputType>WinExe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Restorewindow_position</RootNamespace>
-    <AssemblyName>Restorewindow position</AssemblyName>
+    <RootNamespace>Restore_Window_Position</RootNamespace>
+    <AssemblyName>Restore Window Position</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
   </PropertyGroup>
@@ -64,6 +64,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>

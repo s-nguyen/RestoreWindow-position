@@ -13,7 +13,7 @@ using System.Collections.Generic;
 
 /* Pro tip RECT gets the border pixil location*/
 
-namespace Restorewindow_position
+namespace Restore_Window_Position
 {
     
     public partial class Form1 : Form
@@ -21,21 +21,12 @@ namespace Restorewindow_position
 
         private List<window> activeWindow;
 
-        #region getwindowplacement
-        [DllImport("user32.dll")]
-        [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
 
-        private struct WINDOWPLACEMENT
-        {
-            public int length;
-            public int flags;
-            public int showCmd;
-            public System.Drawing.Point ptMinPosition;
-            public System.Drawing.Point ptMaxPosition;
-            public System.Drawing.Rectangle rcNormalPosition;
-        }
+        #region ShowWindowAsync
+        [DllImport("user32.dll")]
+        private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
         #endregion
+
 
         #region getactivewindow
         protected delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
@@ -75,6 +66,9 @@ namespace Restorewindow_position
         #endregion
 
          #region FORM stuff
+
+         
+
          public Form1()
         {
             InitializeComponent();
@@ -86,9 +80,11 @@ namespace Restorewindow_position
         }
         private void button1_Click(object sender, EventArgs e)
         {
-           // textBox1.Clear();
+            textBox1.Clear();
+            textBox1.AppendText("Saved Programs: \n");
             activeWindow = new List<window>(); //Creates new list when this button is clicked
             EnumWindows(new EnumWindowsProc(EnumTheWindows), IntPtr.Zero); //Stores required value in a list
+           
         
         }
         private void button2_Click(object sender, EventArgs e)
@@ -97,7 +93,12 @@ namespace Restorewindow_position
            // MoveWindow(hWnd, 0, 0, 700, 700, true);  
 
             foreach(window w in activeWindow){
-                MoveWindow(w.gethWnd(), w.getX(), w.getY(), w.getWidth(), w.getHeight(), true);
+               
+                if(w.getPosition() != 2 || w.getPosition() != 3)
+                    MoveWindow(w.gethWnd(), w.getX(), w.getY(), w.getWidth(), w.getHeight(), true);
+                ShowWindowAsync(w.gethWnd(), w.getPosition());
+                
+                
             }
             
         }
@@ -106,11 +107,32 @@ namespace Restorewindow_position
             
             
         }
-
+        private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
+        }
+        //Handles resizing to notification area
+        private void frmMain_Resize(object sender, EventArgs e)
+        {
+            if (FormWindowState.Minimized == this.WindowState)
+            {
+                notifyIcon1.Visible = true;
+                notifyIcon1.ShowBalloonTip(500);
+                this.Hide();
+            }
+            else if (FormWindowState.Normal == this.WindowState)
+            {
+                notifyIcon1.Visible = false;
+            }
+        }
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-            textBox1.Clear();
+           // textBox1.Clear();
+
+
+            /* Debug
             IntPtr skype = (IntPtr)66612;
             RECT rct = new RECT();
             GetWindowRect(skype, ref rct);
@@ -124,13 +146,19 @@ namespace Restorewindow_position
             textBox1.AppendText("X: " + rct.Left + "   Y: " + rct.Top + "\n");
             int wWidth = rct.Right - rct.Left;
             int wHeight = rct.Bottom - rct.Top;
-            textBox1.AppendText("Width: " + wWidth + "   Height: " + wHeight);
+            textBox1.AppendText("Width: " + wWidth + "   Height: " + wHeight + "\n");
+
+            window skypee = new window(skype, "skype", rct.Left, rct.Top, wWidth, wHeight);
+            
+            textBox1.AppendText("" + skypee.getPosition());
+             * 
+             */
         }
         #endregion
 
         public bool EnumTheWindows(IntPtr hWnd, IntPtr lParam)
         {
-
+            
             int size = GetWindowTextLength(hWnd);
             if (size++ > 0 && IsWindowVisible(hWnd))
             {
@@ -143,7 +171,7 @@ namespace Restorewindow_position
                 int wHeight = rct.Bottom - rct.Top; //Calculates the height of a window
                 activeWindow.Add(new window(hWnd, sb.ToString(), rct.Left, rct.Top, wWidth, wHeight));
 
-
+                textBox1.AppendText(sb.ToString() + "\n");
 
 
                 //Console.WriteLine(sb.ToString());
@@ -154,6 +182,10 @@ namespace Restorewindow_position
             }
             return true;
         }
+
+        
         
     }
 }
+//http://stackoverflow.com/questions/1003073/how-to-check-whether-another-app-is-minimized-or-not
+//http://stackoverflow.com/questions/18652162/how-to-minimize-maximize-opened-applications

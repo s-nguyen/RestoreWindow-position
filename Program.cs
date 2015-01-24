@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace Restorewindow_position
+namespace Restore_Window_Position
 {
     static class Program
     {

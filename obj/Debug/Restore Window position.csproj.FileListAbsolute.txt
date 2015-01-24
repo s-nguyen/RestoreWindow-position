@@ -1,0 +1,8 @@
+C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restore Window position.csproj.GenerateResource.Cache
+C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\bin\Debug\Restore Window Position.exe.config
+C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\bin\Debug\Restore Window Position.exe
+C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\bin\Debug\Restore Window Position.pdb
+C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restore_Window_Position.Form1.resources
+C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restore_Window_Position.Properties.Resources.resources
+C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restore Window Position.exe
+C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restore Window Position.pdb
