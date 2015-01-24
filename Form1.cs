@@ -72,11 +72,12 @@ namespace Restore_Window_Position
          public Form1()
         {
             InitializeComponent();
+
         }
 
         private void Form1_Load(object sender, EventArgs e)
         {
-           
+            //notifyIcon1.ContextMenuStrip = ContextMenuStrip1;
         }
         private void button1_Click(object sender, EventArgs e)
         {
@@ -107,18 +108,22 @@ namespace Restore_Window_Position
             
             
         }
+
+
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
             this.Show();
             this.WindowState = FormWindowState.Normal;
         }
         //Handles resizing to notification area
+        //http://stackoverflow.com/questions/16140627/minimize-to-tray
+        //http://alperguc.blogspot.com/2008/11/c-system-tray-minimize-to-tray-with.html
         private void frmMain_Resize(object sender, EventArgs e)
         {
             if (FormWindowState.Minimized == this.WindowState)
             {
                 notifyIcon1.Visible = true;
-                notifyIcon1.ShowBalloonTip(500);
+                notifyIcon1.ShowBalloonTip(300);
                 this.Hide();
             }
             else if (FormWindowState.Normal == this.WindowState)
@@ -182,6 +187,19 @@ namespace Restore_Window_Position
             }
             return true;
         }
+
+        //http://stackoverflow.com/questions/12437751/add-a-function-to-contextmenu-item-at-notifyicon
+        public void ExitApplication(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void notifyIcon1_MouseClick(object sender, EventArgs e)
+        {
+
+        }
+
+        
 
         
         
