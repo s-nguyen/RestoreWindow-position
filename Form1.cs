@@ -27,6 +27,9 @@ namespace Restore_Window_Position
         private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
         #endregion
 
+        //https://msdn.microsoft.com/en-us/library/windows/desktop/ms633545(v=vs.85).aspx
+        [DllImport("User32.dll")]
+        private static extern bool SetWindowPos(IntPtr hWnd, IntPtr hWndInsertAfter, int X, int Y, int cx, int cy, uint uFlags);
 
         #region getactivewindow
         protected delegate bool EnumWindowsProc(IntPtr hWnd, IntPtr lParam);
@@ -65,6 +68,8 @@ namespace Restore_Window_Position
           
         #endregion
 
+
+ 
          #region FORM stuff
 
          
@@ -72,16 +77,16 @@ namespace Restore_Window_Position
          public Form1()
         {
             InitializeComponent();
-
         }
-
+        http://stackoverflow.com/questions/4453998/c-sharp-run-application-minimized-at-windows-startup
         private void Form1_Load(object sender, EventArgs e)
         {
-            //notifyIcon1.ContextMenuStrip = ContextMenuStrip1;
+            this.WindowState = FormWindowState.Minimized;
+            this.ShowInTaskbar = false;
         }
         private void button1_Click(object sender, EventArgs e)
         {
-            textBox1.Clear();
+            textBox1.Clear(); 
             textBox1.AppendText("Saved Programs: \n");
             activeWindow = new List<window>(); //Creates new list when this button is clicked
             EnumWindows(new EnumWindowsProc(EnumTheWindows), IntPtr.Zero); //Stores required value in a list
@@ -94,10 +99,21 @@ namespace Restore_Window_Position
            // MoveWindow(hWnd, 0, 0, 700, 700, true);  
 
             foreach(window w in activeWindow){
-               
-                if(w.getPosition() != 2 || w.getPosition() != 3)
+
+                if (w.getPosition() == 1)
+                {
                     MoveWindow(w.gethWnd(), w.getX(), w.getY(), w.getWidth(), w.getHeight(), true);
-                ShowWindowAsync(w.gethWnd(), w.getPosition());
+                    ShowWindowAsync(w.gethWnd(), w.getPosition());
+                }
+                else if (w.getPosition() == 2)
+                {
+                    ShowWindowAsync(w.gethWnd(), w.getPosition());
+                }
+                else
+                {
+                   SetWindowPos(w.gethWnd(), (IntPtr)0, w.getX(), w.getY(), 0, 0, 0x0001);
+                   ShowWindowAsync(w.gethWnd(), w.getPosition());
+                }
                 
                 
             }
@@ -112,8 +128,23 @@ namespace Restore_Window_Position
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
-            this.Show();
-            this.WindowState = FormWindowState.Normal;
+         
+            if (this.WindowState == FormWindowState.Minimized)
+            {
+                this.Show();
+                this.WindowState = FormWindowState.Normal;
+                this.ShowInTaskbar = true;
+                
+            }
+            else if (this.WindowState == FormWindowState.Normal)
+            {
+                this.WindowState = FormWindowState.Minimized;
+                this.Hide();
+                
+                notifyIcon1.ShowBalloonTip(300);
+                
+            }
+            
         }
         //Handles resizing to notification area
         //http://stackoverflow.com/questions/16140627/minimize-to-tray
@@ -122,14 +153,14 @@ namespace Restore_Window_Position
         {
             if (FormWindowState.Minimized == this.WindowState)
             {
-                notifyIcon1.Visible = true;
+               // notifyIcon1.Visible = true;
                 notifyIcon1.ShowBalloonTip(300);
                 this.Hide();
             }
-            else if (FormWindowState.Normal == this.WindowState)
-            {
-                notifyIcon1.Visible = false;
-            }
+           // else if (FormWindowState.Normal == this.WindowState)
+           // {
+           //     notifyIcon1.Visible = false;
+           // }
         }
 
         private void timer1_Tick(object sender, EventArgs e)
