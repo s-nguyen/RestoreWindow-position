@@ -11,6 +11,7 @@ using System.Runtime.InteropServices;
 using System.Diagnostics;
 using System.Collections.Generic;
 
+/* Pro tip RECT gets the border pixil location*/
 
 namespace Restorewindow_position
 {
@@ -30,32 +31,7 @@ namespace Restorewindow_position
         protected static extern bool EnumWindows(EnumWindowsProc enumProc, IntPtr lParam);
         [DllImport("user32.dll")]
         protected static extern bool IsWindowVisible(IntPtr hWnd);
-        public bool EnumTheWindows(IntPtr hWnd, IntPtr lParam)
-        {
-            
-            int size = GetWindowTextLength(hWnd);
-            if (size++ > 0 && IsWindowVisible(hWnd))
-            {
-                StringBuilder sb = new StringBuilder(size);
-                GetWindowText(hWnd, sb, size); //What is size?
-
-                RECT rct = new RECT();
-                GetWindowRect(hWnd, ref rct);
-                int wWidth = rct.Right - rct.Left;
-                int wHeight = rct.Bottom - rct.Top;
-                activeWindow.Add(new window(hWnd, sb.ToString(), rct.Left, rct.Top, wWidth, wHeight));
-
-
-
-
-                //Console.WriteLine(sb.ToString());
-
-                
-                //MoveWindow(hWnd, 600, 600, 600, 600, true);  
-               // textBox1.AppendText(sb.ToString() + "     " + rct.Top + " " + rct.Bottom + " " + rct.Left + " " + rct.Right +  "   " +hWnd + "\n");
-            }
-            return true;
-        }
+        
         #endregion
 
         #region coordinates of windows
@@ -82,7 +58,8 @@ namespace Restorewindow_position
           
         #endregion
 
-        public Form1()
+         #region FORM stuff
+         public Form1()
         {
             InitializeComponent();
         }
@@ -96,16 +73,16 @@ namespace Restorewindow_position
            // textBox1.Clear();
             activeWindow = new List<window>(); //Creates new list when this button is clicked
             EnumWindows(new EnumWindowsProc(EnumTheWindows), IntPtr.Zero); //Stores required value in a list
-            
-
-            
-
-            
+        
         }
         private void button2_Click(object sender, EventArgs e)
         {
-            IntPtr hWnd = (IntPtr)66612;
-            MoveWindow(hWnd, 0, 0, 700, 700, true);  
+           // IntPtr hWnd = (IntPtr)66612;
+           // MoveWindow(hWnd, 0, 0, 700, 700, true);  
+
+            foreach(window w in activeWindow){
+                MoveWindow(w.gethWnd(), w.getX(), w.getY(), w.getWidth(), w.getHeight(), true);
+            }
             
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -113,9 +90,6 @@ namespace Restorewindow_position
             
             
         }
-
-        
-
 
 
         private void timer1_Tick(object sender, EventArgs e)
@@ -136,7 +110,34 @@ namespace Restorewindow_position
             int wHeight = rct.Bottom - rct.Top;
             textBox1.AppendText("Width: " + wWidth + "   Height: " + wHeight);
         }
+        #endregion
 
+        public bool EnumTheWindows(IntPtr hWnd, IntPtr lParam)
+        {
+
+            int size = GetWindowTextLength(hWnd);
+            if (size++ > 0 && IsWindowVisible(hWnd))
+            {
+                StringBuilder sb = new StringBuilder(size);
+                GetWindowText(hWnd, sb, size); //What is size?
+
+                RECT rct = new RECT();
+                GetWindowRect(hWnd, ref rct);
+                int wWidth = rct.Right - rct.Left; //Calculates the width
+                int wHeight = rct.Bottom - rct.Top; //Calculates the height of a window
+                activeWindow.Add(new window(hWnd, sb.ToString(), rct.Left, rct.Top, wWidth, wHeight));
+
+
+
+
+                //Console.WriteLine(sb.ToString());
+
+
+                //MoveWindow(hWnd, 600, 600, 600, 600, true);  
+                // textBox1.AppendText(sb.ToString() + "     " + rct.Top + " " + rct.Bottom + " " + rct.Left + " " + rct.Right +  "   " +hWnd + "\n");
+            }
+            return true;
+        }
         
     }
 }

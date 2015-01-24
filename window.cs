@@ -19,10 +19,10 @@ namespace Restorewindow_position
         {
             this.hWnd = hWnd;
             this.name = name;
-            xCoordinate = x;
-            yCoordinate = y;
-            w = width;
-            h = height;
+            this.xCoordinate = x;
+            this.yCoordinate = y;
+            this.width = w;
+            this.height = h;
         }
 
         public IntPtr gethWnd()
