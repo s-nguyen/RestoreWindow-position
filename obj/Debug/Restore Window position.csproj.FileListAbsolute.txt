@@ -6,3 +6,4 @@ C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Re
 C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restore_Window_Position.Properties.Resources.resources
 C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restore Window Position.exe
 C:\Users\Stephen\Documents\Visual Studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restore Window Position.pdb
+C:\Users\Stephen\documents\visual studio 2013\Projects\Restorewindow position\Restorewindow position\obj\Debug\Restore Window position.csprojResolveAssemblyReference.cache

@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Runtime.InteropServices;
 using System.Diagnostics;
-using System.Collections.Generic;
+
 
 /* Pro tip RECT gets the border pixil location*/
 
@@ -78,7 +78,7 @@ namespace Restore_Window_Position
         {
             InitializeComponent();
         }
-        http://stackoverflow.com/questions/4453998/c-sharp-run-application-minimized-at-windows-startup
+        //http://stackoverflow.com/questions/4453998/c-sharp-run-application-minimized-at-windows-startup
         private void Form1_Load(object sender, EventArgs e)
         {
             this.WindowState = FormWindowState.Minimized;
@@ -98,25 +98,34 @@ namespace Restore_Window_Position
            // IntPtr hWnd = (IntPtr)66612;
            // MoveWindow(hWnd, 0, 0, 700, 700, true);  
 
-            foreach(window w in activeWindow){
+            try
+            {
+                foreach (window w in activeWindow)
+                {
 
-                if (w.getPosition() == 1)
-                {
-                    MoveWindow(w.gethWnd(), w.getX(), w.getY(), w.getWidth(), w.getHeight(), true);
-                    ShowWindowAsync(w.gethWnd(), w.getPosition());
+                    if (w.getPosition() == 1)
+                    {
+                        MoveWindow(w.gethWnd(), w.getX(), w.getY(), w.getWidth(), w.getHeight(), true);
+                        ShowWindowAsync(w.gethWnd(), w.getPosition());
+                    }
+                    else if (w.getPosition() == 2)
+                    {
+                        ShowWindowAsync(w.gethWnd(), w.getPosition());
+                    }
+                    else
+                    {
+                        SetWindowPos(w.gethWnd(), (IntPtr)0, w.getX(), w.getY(), 0, 0, 0x0001);
+                        ShowWindowAsync(w.gethWnd(), w.getPosition());
+                    }
+                    //handle minimize and load to maximize
+
                 }
-                else if (w.getPosition() == 2)
-                {
-                    ShowWindowAsync(w.gethWnd(), w.getPosition());
-                }
-                else
-                {
-                   SetWindowPos(w.gethWnd(), (IntPtr)0, w.getX(), w.getY(), 0, 0, 0x0001);
-                   ShowWindowAsync(w.gethWnd(), w.getPosition());
-                }
-                
-                
             }
+            catch (NullReferenceException)
+            {
+                textBox1.Text = "Nothing is saved!";
+            }
+           
             
         }
         private void textBox1_TextChanged(object sender, EventArgs e)
@@ -168,7 +177,7 @@ namespace Restore_Window_Position
            // textBox1.Clear();
 
 
-            /* Debug
+            
             IntPtr skype = (IntPtr)66612;
             RECT rct = new RECT();
             GetWindowRect(skype, ref rct);
@@ -187,8 +196,7 @@ namespace Restore_Window_Position
             window skypee = new window(skype, "skype", rct.Left, rct.Top, wWidth, wHeight);
             
             textBox1.AppendText("" + skypee.getPosition());
-             * 
-             */
+            
         }
         #endregion
 
