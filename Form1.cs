@@ -35,18 +35,22 @@ namespace Restorewindow_position
                 GetWindowText(hWnd, sb, size);
                 //Console.WriteLine(sb.ToString());
 
-
-                MoveWindow(hWnd, 600, 600, 600, 600, true);  
-                textBox1.AppendText(hWnd.ToString() + "\n");
+                RECT rct = new RECT();
+                GetWindowRect(hWnd, ref rct);
+                //MoveWindow(hWnd, 600, 600, 600, 600, true);  
+                textBox1.AppendText(sb.ToString() + rct.Top + " " + rct.Bottom + " " + rct.Left + " " + rct.Right + "\n");
             }
             return true;
         }
         #endregion
 
         #region coordinates of windows
+        // http://msdn.microsoft.com/en-us/library/ms633519(VS.85).aspx
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
+        public static extern bool GetWindowRect(IntPtr hWnd, ref RECT lpRect);
+
+        // http://msdn.microsoft.com/en-us/library/a5ch4fda(VS.80).aspx
         [StructLayout(LayoutKind.Sequential)]
         public struct RECT
         {
