@@ -21,7 +21,21 @@ namespace Restore_Window_Position
 
         private List<window> activeWindow;
 
+        #region findwindow position
+        [DllImport("user32.dll")]
+        [return: MarshalAs(UnmanagedType.Bool)]
+        static extern bool GetWindowPlacement(IntPtr hWnd, ref WINDOWPLACEMENT lpwndpl);
 
+        private struct WINDOWPLACEMENT
+        {
+            public int length;
+            public int flags;
+            public int showCmd;
+            public System.Drawing.Point ptMinPosition;
+            public System.Drawing.Point ptMaxPosition;
+            public System.Drawing.Rectangle rcNormalPosition;
+        }
+        #endregion
         #region ShowWindowAsync
         [DllImport("user32.dll")]
         private static extern bool ShowWindowAsync(IntPtr hWnd, int nCmdShow);
@@ -84,6 +98,7 @@ namespace Restore_Window_Position
             this.WindowState = FormWindowState.Minimized;
             this.ShowInTaskbar = false;
         }
+
         private void button1_Click(object sender, EventArgs e)
         {
             textBox1.Clear(); 
@@ -95,30 +110,30 @@ namespace Restore_Window_Position
         }
         private void button2_Click(object sender, EventArgs e)
         {
-           // IntPtr hWnd = (IntPtr)66612;
-           // MoveWindow(hWnd, 0, 0, 700, 700, true);  
-
             try
             {
                 foreach (window w in activeWindow)
                 {
+                    WINDOWPLACEMENT placement = new WINDOWPLACEMENT();
+                    GetWindowPlacement(w.gethWnd(), ref placement); //Get current placement
 
-                    if (w.getPosition() == 1)
+                    if (w.getPosition() == 3) //If Maximize in save state
                     {
-                        MoveWindow(w.gethWnd(), w.getX(), w.getY(), w.getWidth(), w.getHeight(), true);
+                        ShowWindowAsync(w.gethWnd(), 1); //Set back to normal first
+                        SetWindowPos(w.gethWnd(), IntPtr.Zero, w.getX() + 100, w.getY() + 100, 0, 0, 0x0001);
                         ShowWindowAsync(w.gethWnd(), w.getPosition());
                     }
                     else if (w.getPosition() == 2)
                     {
-                        ShowWindowAsync(w.gethWnd(), w.getPosition());
+                        //Else if minimized
+                        ShowWindowAsync(w.gethWnd(), 1);
+                        ShowWindowAsync(w.gethWnd(), 2);
                     }
                     else
                     {
-                        SetWindowPos(w.gethWnd(), (IntPtr)0, w.getX(), w.getY(), 0, 0, 0x0001);
-                        ShowWindowAsync(w.gethWnd(), w.getPosition());
+                        ShowWindowAsync(w.gethWnd(), 1);
+                        MoveWindow(w.gethWnd(), w.getX(), w.getY(), w.getWidth(), w.getHeight(), true);
                     }
-                    //handle minimize and load to maximize
-
                 }
             }
             catch (NullReferenceException)
@@ -133,7 +148,6 @@ namespace Restore_Window_Position
             
             
         }
-
 
         private void notifyIcon1_MouseDoubleClick(object sender, MouseEventArgs e)
         {
@@ -174,11 +188,11 @@ namespace Restore_Window_Position
 
         private void timer1_Tick(object sender, EventArgs e)
         {
-           // textBox1.Clear();
+           /* textBox1.Clear();
 
 
-            
-            IntPtr skype = (IntPtr)66612;
+
+            IntPtr skype = (IntPtr)66634;
             RECT rct = new RECT();
             GetWindowRect(skype, ref rct);
 
@@ -195,7 +209,7 @@ namespace Restore_Window_Position
 
             window skypee = new window(skype, "skype", rct.Left, rct.Top, wWidth, wHeight);
             
-            textBox1.AppendText("" + skypee.getPosition());
+            textBox1.AppendText("" + skypee.getPosition());*/
             
         }
         #endregion
@@ -215,7 +229,7 @@ namespace Restore_Window_Position
                 int wHeight = rct.Bottom - rct.Top; //Calculates the height of a window
                 activeWindow.Add(new window(hWnd, sb.ToString(), rct.Left, rct.Top, wWidth, wHeight));
 
-                textBox1.AppendText(sb.ToString() + "\n");
+                textBox1.AppendText(sb.ToString() +  "  X:"+rct.Left+" Y:"+rct.Top+"\n");
 
 
                 //Console.WriteLine(sb.ToString());
