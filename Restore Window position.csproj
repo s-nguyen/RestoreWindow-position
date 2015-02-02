@@ -84,7 +84,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="2013-09-20-607149.ico" />
-    <Content Include="iconn.ico" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
